@@ -99,7 +99,7 @@ func TestConfigAddressResolution(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if cfg.Server.Address.String() != "127.0.0.1:25570" {
+	if !cfg.Server.Address.IP.IsLoopback() || cfg.Server.Address.Port != 25570 {
 		t.Errorf("server.address = %s", cfg.Server.Address)
 	}
 	if cfg.Public.Address.String() != "127.0.0.1:25599" {
