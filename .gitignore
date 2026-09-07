@@ -1,0 +1,73 @@
+# Local Go build, test, and profiling output. Release binaries are published
+# separately with a checksum and matching source; they are not source files.
+/lazymc
+/dist/
+/build/
+*.test
+*.out
+coverage*
+*.prof
+*.pcap
+
+# Local environment and credential material.
+.env
+.env.*
+!.env.example
+*.secret
+*.pem
+*.key
+*.p12
+
+# Minecraft/runtime state that must not enter the source repository.
+*.log
+*.db
+*.sqlite
+*.sqlite3
+*.jar
+server.properties
+logs/
+world/
+crash-reports/
+replays/
+
+# Editor and operating-system noise.
+.DS_Store
+*~
+
+
+# Local AI-agent instructions and working notes
+AGENT.md
+AGENTS.md
+AGENTS.override.md
+CLAUDE.md
+CLAUDE.local.md
+GEMINI.md
+COPILOT.md
+MEMORY.md
+HANDOFF.md
+*_HANDOFF.md
+AGENT_NOTES.md
+.codex/
+.claude/
+.gemini/
+.cursor/
+.agent/
+.agents/
+.cursorrules
+.windsurfrules
+.github/copilot-instructions.md
+.github/instructions/
+.github/prompts/
+.github/agents/
+
+.venv/
+node_modules/
+.next/
+__pycache__/
+.env
+.env.*
+!.env.example
+*.sqlite*
+*.db
+*.log
+/lazygate
