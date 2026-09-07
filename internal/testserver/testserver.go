@@ -81,9 +81,10 @@ type Server struct {
 	captureMu  sync.Mutex
 	captureN   int
 
-	connsMu sync.Mutex
-	conns   map[net.Conn]struct{}
-	wg      sync.WaitGroup
+	connsMu    sync.Mutex
+	conns      map[net.Conn]struct{}
+	wg         sync.WaitGroup
+	acceptDone chan struct{}
 }
 
 // NewServer creates and starts the mock server on the given address.
@@ -92,7 +93,7 @@ func NewServer(addr, stateFile string) (*Server, error) {
 	if err != nil {
 		return nil, err
 	}
-	s := &Server{Addr: ln.Addr().String(), StateFile: stateFile, state: NewState(), ln: ln, conns: map[net.Conn]struct{}{}}
+	s := &Server{Addr: ln.Addr().String(), StateFile: stateFile, state: NewState(), ln: ln, conns: map[net.Conn]struct{}{}, acceptDone: make(chan struct{})}
 	s.writeState()
 	go s.acceptLoop()
 	return s, nil
@@ -101,6 +102,8 @@ func NewServer(addr, stateFile string) (*Server, error) {
 // Stop shuts the server down, closing active connections.
 func (s *Server) Stop() {
 	s.ln.Close()
+	// Finish accepting and writing shutdown state before callers remove fixtures.
+	<-s.acceptDone
 	s.connsMu.Lock()
 	for conn := range s.conns {
 		conn.Close()
@@ -178,6 +181,7 @@ func (s *Server) writeState() {
 }
 
 func (s *Server) acceptLoop() {
+	defer close(s.acceptDone)
 	for {
 		conn, err := s.ln.Accept()
 		if err != nil {
