@@ -355,7 +355,7 @@ func allSpaces(s string) bool {
 // sendLobbyPlayPackets sends packets to the client to get a workable play
 // state for the lobby world.
 func sendLobbyPlayPackets(client *proto.Client, clientInfo *proto.ClientInfo, conn net.Conn, server *ServerState, config *Config) error {
-	// See: https://wiki.vg/Protocol_FAQ#What.27s_the_normal_login_sequence_for_a_client.3F
+	// See: https://minecraft.wiki/w/Java_Edition_protocol/FAQ#What.27s_the_normal_login_sequence_for_a_client.3F
 
 	// Send initial game join
 	params := lobbyJoinGameParams(config, server)
